@@ -7,26 +7,20 @@ jobs:
     runs-on: ubuntu-latest
     services:
       rabbitmq:
-        image: rabbitmq
+        image: rabbitmq:3-management
         ports:
           - 5672:5672
           - 15672:15672
-        env:
-            RABBITMQ_DEFAULT_USER: rabbitmq
-            RABBITMQ_DEFAULT_PASS: rabbitmq
-            RABBITMQ_DEFAULT_VHOST: /
-
     steps:
-      - name: Clone repo
-        uses: actions/checkout@master
+      - uses: actions/checkout@v2
 
-      - name: Install deno
-        uses: denolib/setup-deno@master
-        with: 
-          deno-version: 1.0.0
+      - name: Setup Deno environment
+        uses: denolib/setup-deno@v1.3.0
+        with:
+          deno-version: v1.0.2
 
       - name: Check formatting
         run: deno fmt --check
 
-      - name: Run tests
-        run: deno test --allow-net --allow-env test.ts
+      - name: Run unit tests
+        run: deno test src/
