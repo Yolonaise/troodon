@@ -26,4 +26,4 @@ jobs:
         run: deno test
 
       - name: Wait for rabbit
-        run: deno run --allow-net module_test/wait_for_server.ts
+        run: deno run --allow-net wait_for_server.ts
