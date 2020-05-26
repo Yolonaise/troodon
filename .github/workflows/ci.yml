@@ -5,6 +5,20 @@ on: [push, pull_request, release]
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      rabbitmq:
+        image: rabbitmq
+        ports:
+          - ${RABBIT_PORT}:${RABBIT_PORT}
+          - 15672:15672
+        volumes:
+          - ./data/rabbitmq:/var/lib/rabbitmq/mnesia/rabbit@app-rabbitmq:cached
+        env:
+            RABBITMQ_ERLANG_COOKIE: 6085e2412b6fa88647466c6a81c0cea0
+            RABBITMQ_DEFAULT_USER: rabbitmq
+            RABBITMQ_DEFAULT_PASS: rabbitmq
+            RABBITMQ_DEFAULT_VHOST: /
+
     steps:
       - name: Clone repo
         uses: actions/checkout@master
