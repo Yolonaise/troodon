@@ -1,10 +1,10 @@
 import IMessage from "../../interfaces/message.interface.ts";
 import Producer from "./base.producer.ts";
 import { AmqpChannel } from "../../deps.ts";
-import { 
-  getExchangeName, 
-  TOPIC_TYPE, 
-  getTopicName
+import {
+  getExchangeName,
+  TOPIC_TYPE,
+  getTopicName,
 } from "../helpers/name.helper.ts";
 
 export default class TopicProducer<T extends IMessage> extends Producer<T> {

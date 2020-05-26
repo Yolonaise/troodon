@@ -2,9 +2,9 @@ import IMessage from "../interfaces/message.interface.ts";
 
 export default class Test2Message implements IMessage {
   value: string = "";
-  
+
   constructor() {
-    this.value = "a new test message 2"
+    this.value = "a new test message 2";
   }
 
   getName(): string {

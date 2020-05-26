@@ -46,7 +46,11 @@ export default class RabbitFactory {
   }
 
   async getConsumer<M extends IMessage, P extends Consumer<M>>(
-    consumerType: new (msgBuilder: new ()=> M, name: string, channel: AmqpChannel) => P,
+    consumerType: new (
+      msgBuilder: new () => M,
+      name: string,
+      channel: AmqpChannel,
+    ) => P,
     msgType: new () => M,
   ): Promise<Consumer<M>> {
     const channel = await this.tryConnection();

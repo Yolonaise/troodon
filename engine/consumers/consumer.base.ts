@@ -1,18 +1,22 @@
 import IMessage from "../../interfaces/message.interface.ts";
-import { 
+import {
   AmqpChannel,
   v4,
   BasicDeliver,
-  BasicProperties
+  BasicProperties,
 } from "../../deps.ts";
-import { getQueueName, getExchangeName, getTopicName } from "../helpers/name.helper.ts";
+import {
+  getQueueName,
+  getExchangeName,
+  getTopicName,
+} from "../helpers/name.helper.ts";
 
 export default class Consumer<M extends IMessage> {
   readonly name: string;
   readonly channel: AmqpChannel;
   readonly uuid: string;
   readonly msgBuilder: new () => M;
-  
+
   constructor(msgBuilder: new () => M, name: string, channel: AmqpChannel) {
     this.name = name;
     this.channel = channel;
@@ -28,21 +32,25 @@ export default class Consumer<M extends IMessage> {
 
     await this.channel.bindQueue({
       exchange: getExchangeName(this.name),
-      queue:  getQueueName(this.name, this.uuid),
+      queue: getQueueName(this.name, this.uuid),
       routingKey: getTopicName(this.name),
     });
   }
 
-  buildMessage(args: BasicDeliver, props: BasicProperties, data: Uint8Array) : M {
+  buildMessage(
+    args: BasicDeliver,
+    props: BasicProperties,
+    data: Uint8Array,
+  ): M {
     let msg = new this.msgBuilder();
-    
+
     return msg;
   }
 
   async consume(handler: (msg: M) => void): Promise<any> {
     await this.channel.consume(
       { queue: getQueueName(this.name, this.uuid) },
-      (args, props, data) => handler(this.buildMessage(args, props, data))
+      (args, props, data) => handler(this.buildMessage(args, props, data)),
     );
   }
 }
