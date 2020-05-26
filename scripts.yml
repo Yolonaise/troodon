@@ -1,0 +1,3 @@
+scripts:
+  cache: deno cache deps.ts 
+  start: deno run --allow-all main.ts
