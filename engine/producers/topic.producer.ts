@@ -1,5 +1,5 @@
-import IMessage from "../../interfaces/message.interface.ts";
-import Producer from "./base.producer.ts";
+import { IMessage } from "../../interfaces/message.interface.ts";
+import { Producer } from "./base.producer.ts";
 import { AmqpChannel } from "../../deps.ts";
 import {
   getExchangeName,

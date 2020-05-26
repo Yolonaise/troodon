@@ -1,4 +1,4 @@
-import IMessage from "../../interfaces/message.interface.ts";
+import { IMessage } from "../../interfaces/message.interface.ts";
 import { AmqpChannel, BasicPublishArgs } from "../../deps.ts";
 
 export abstract class Producer<T extends IMessage> {

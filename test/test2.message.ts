@@ -1,4 +1,4 @@
-import IMessage from "../interfaces/message.interface.ts";
+import { IMessage } from "../interfaces/message.interface.ts";
 
 export default class Test2Message implements IMessage {
   value: string = "";

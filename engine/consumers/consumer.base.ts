@@ -1,4 +1,4 @@
-import IMessage from "../../interfaces/message.interface.ts";
+import { IMessage } from "../../interfaces/message.interface.ts";
 import {
   AmqpChannel,
   v4,
