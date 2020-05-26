@@ -7,7 +7,7 @@ import {
   getTopicName,
 } from "../helpers/name.helper.ts";
 
-export default class TopicProducer<T extends IMessage> extends Producer<T> {
+export class TopicProducer<T extends IMessage> extends Producer<T> {
   constructor(name: string, channel: AmqpChannel) {
     super(name, channel);
   }

@@ -1,4 +1,4 @@
-export default interface IConfiguration {
+export interface IConfiguration {
   host: string;
   port: number;
   username: string;

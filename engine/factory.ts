@@ -4,7 +4,7 @@ import IConfiguration from "../interfaces/configuration.interface.ts";
 import Producer from "./producers/base.producer.ts";
 import Consumer from "./consumers/consumer.base.ts";
 
-export default class RabbitFactory {
+export class RabbitFactory {
   private connection?: AmqpConnection;
   private config?: IConfiguration;
 

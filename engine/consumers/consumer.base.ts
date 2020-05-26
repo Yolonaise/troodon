@@ -11,7 +11,7 @@ import {
   getTopicName,
 } from "../helpers/name.helper.ts";
 
-export default class Consumer<M extends IMessage> {
+export class Consumer<M extends IMessage> {
   readonly name: string;
   readonly channel: AmqpChannel;
   readonly uuid: string;

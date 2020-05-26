@@ -1,7 +1,7 @@
 import IMessage from "../../interfaces/message.interface.ts";
 import { AmqpChannel, BasicPublishArgs } from "../../deps.ts";
 
-export default abstract class Producer<T extends IMessage> {
+export abstract class Producer<T extends IMessage> {
   readonly name: string;
   readonly channel: AmqpChannel;
 

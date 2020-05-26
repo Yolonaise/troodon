@@ -1,3 +1,4 @@
 scripts:
   cache: deno cache deps.ts 
-  start: deno run --allow-all main.ts
+  cache-test: deno cache test_deps.ts
+  test: deno run --allow-all test.ts

@@ -1,0 +1,40 @@
+name: ci
+
+on: [push, pull_request, release]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      rabbitmq:
+        image: rabbitmq
+        ports:
+          - ${RABBIT_PORT}:${RABBIT_PORT}
+          - 15672:15672
+        volumes:
+          - ./data/rabbitmq:/var/lib/rabbitmq/mnesia/rabbit@app-rabbitmq:cached
+        environment:
+            RABBITMQ_ERLANG_COOKIE: 6085e2412b6fa88647466c6a81c0cea0
+            RABBITMQ_DEFAULT_USER: rabbitmq
+            RABBITMQ_DEFAULT_PASS: rabbitmq
+            RABBITMQ_DEFAULT_VHOST: /
+        healthcheck:
+          test: [ "CMD", "nc", "-z", "localhost", "5672" ]
+          interval: 10s
+          timeout: 10s
+          retries: 5
+
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@master
+
+      - name: Install deno
+        uses: denolib/setup-deno@master
+        with: 
+          deno-version: 1.0.0
+
+      - name: Check formatting
+        run: deno fmt --check
+
+      - name: Run tests
+        run: deno test --allow-net --allow-env test.ts
