@@ -1,14 +1,14 @@
 import { AmqpChannel, connect, AmqpConnection } from "../deps.ts";
 import { IMessage } from "../interfaces/message.interface.ts";
 import { IConfiguration } from "../interfaces/configuration.interface.ts";
-import { Producer }from "./producers/base.producer.ts";
-import { Consumer} from "./consumers/consumer.base.ts";
+import { Producer } from "./producers/base.producer.ts";
+import { Consumer } from "./consumers/consumer.base.ts";
 
 export class RabbitFactory {
   private connection?: AmqpConnection;
   private config?: IConfiguration;
-  private channel?: AmqpChannel; 
-  
+  private channel?: AmqpChannel;
+
   constructor(config: IConfiguration) {
     this.config = config;
   }
@@ -17,20 +17,18 @@ export class RabbitFactory {
     try {
       if (this.connection && !this.channel) {
         this.channel = await this.connection.openChannel();
+      } else if (!this.connection) {
+        this.connection = await connect({
+          hostname: this.config?.host,
+          port: this.config?.port,
+          username: this.config?.username,
+          password: this.config?.password,
+        });
+        this.channel = await this.connection.openChannel();
       }
-      else if (!this.connection) {
-          this.connection = await connect({
-            hostname: this.config?.host,
-            port: this.config?.port,
-            username: this.config?.username,
-            password: this.config?.password,
-          });
-          this.channel = await this.connection.openChannel();
-        } 
-      }
-      catch (err) {
-        console.log(err);
-        throw err;
+    } catch (err) {
+      console.log(err);
+      throw err;
     }
     return this.channel;
   }
