@@ -19,7 +19,6 @@ export class RabbitFactory {
         this.channel = await this.connection.openChannel();
       }
       else if (!this.connection) {
-        
           this.connection = await connect({
             hostname: this.config?.host,
             port: this.config?.port,
