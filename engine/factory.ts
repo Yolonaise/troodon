@@ -7,14 +7,15 @@ import { Consumer} from "./consumers/consumer.base.ts";
 export class RabbitFactory {
   private connection?: AmqpConnection;
   private config?: IConfiguration;
-
+  private channel?: AmqpChannel; 
+  
   constructor(config: IConfiguration) {
     this.config = config;
   }
 
   async tryConnection(): Promise<AmqpChannel> {
-    if (this.connection) {
-      return this.connection.openChannel();
+    if (this.connection && !this.channel) {
+      this.channel = await this.connection.openChannel();
     }
 
     try {
@@ -24,11 +25,12 @@ export class RabbitFactory {
         username: this.config?.username,
         password: this.config?.password,
       });
-      return await this.connection.openChannel();
+      this.channel = await this.connection.openChannel();
     } catch (err) {
       console.log(err);
       throw err;
     }
+    return this.channel;
   }
 
   async getProducer<M extends IMessage, P extends Producer<M>>(
