@@ -14,21 +14,24 @@ export class RabbitFactory {
   }
 
   async tryConnection(): Promise<AmqpChannel> {
-    if (this.connection && !this.channel) {
-      this.channel = await this.connection.openChannel();
-    }
-
     try {
-      this.connection = await connect({
-        hostname: this.config?.host,
-        port: this.config?.port,
-        username: this.config?.username,
-        password: this.config?.password,
-      });
-      this.channel = await this.connection.openChannel();
-    } catch (err) {
-      console.log(err);
-      throw err;
+      if (this.connection && !this.channel) {
+        this.channel = await this.connection.openChannel();
+      }
+      else if (!this.connection) {
+        
+          this.connection = await connect({
+            hostname: this.config?.host,
+            port: this.config?.port,
+            username: this.config?.username,
+            password: this.config?.password,
+          });
+          this.channel = await this.connection.openChannel();
+        } 
+      }
+      catch (err) {
+        console.log(err);
+        throw err;
     }
     return this.channel;
   }
