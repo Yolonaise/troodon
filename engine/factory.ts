@@ -13,11 +13,9 @@ export class RabbitFactory {
     this.config = config;
   }
 
-  async tryConnection(): Promise<AmqpChannel> {
+  async tryConnection(): Promise<AmqpChannel | null> {
     try {
-      if (this.connection && !this.channel) {
-        this.channel = await this.connection.openChannel();
-      } else if (!this.connection) {
+      if (!this.connection) {
         this.connection = await connect({
           hostname: this.config?.host,
           port: this.config?.port,
@@ -25,12 +23,14 @@ export class RabbitFactory {
           password: this.config?.password,
         });
         this.channel = await this.connection.openChannel();
-      }
+      } else if(!this.channel) {
+        this.channel = await this.connection.openChannel();
+      } 
+      return this.channel;
     } catch (err) {
       console.log(err);
       throw err;
     }
-    return this.channel;
   }
 
   async getProducer<M extends IMessage, P extends Producer<M>>(
